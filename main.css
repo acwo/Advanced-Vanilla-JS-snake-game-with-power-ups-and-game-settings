@@ -1,0 +1,22 @@
+body {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    max-width: 1000px;
+    height: 97vh;
+    margin: 0 auto;
+    background-color: #252526;
+    color: white;
+    font-size: 15px;
+}
+
+.snake__settings {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.snake__setting {
+    margin: 5px 0 25px;
+    text-align: center;
+}
