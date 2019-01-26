@@ -725,38 +725,14 @@ function draw() {
 function updateScores() {
   document.getElementById("score").innerHTML = score;
   document.getElementById("highest").innerHTML = highest;
-
   if(score >= highest)  {
     sessionStorage.setItem("highest", score);
     highest = score;
   }
 }
 
-reset();
-if (sessionStorage.highest > highest) {
-  highest = sessionStorage.highest;
-}
-let gameLoop = setInterval( function() {
-  move(beast);
-  draw(beast);
-  updateScores();
-  startScreen();
-  levels();
-}, 1000/getSavedInputValue("js-snake-speed"));
-
 function levels() {
-  if(score >= 10) {
-    level1 = true;
-  }
-  if(score >= 20) {
-    level2 = true;
-  }
-  if(score >= 30) {
-    level3 = true;
-  }
-  if(score >= 40) {
-    level4 = true;
-  }
+
   if ((parseInt(getSavedSelectValue("js-snake-level-select"))) == 0) {
     level0 = true;
     level1 = false;
@@ -792,4 +768,35 @@ function levels() {
     level3 = false;
     level4 = true;
   }
+
+  if(score >= 10) {
+    level1 = true;
+    scoreIncrease = 2;
+  }
+  if(score >= 30) {
+    level2 = true;
+    scoreIncrease = 3;
+  }
+  if(score >= 60) {
+    level3 = true;
+    scoreIncrease = 4;
+  }
+  if(score >= 100) {
+    level4 = true;
+    scoreIncrease = 5;
+  }
+
+}
+
+reset();
+let gameLoop = setInterval( function() {
+  move(beast);
+  draw(beast);
+  updateScores();
+  startScreen();
+  levels();
+}, 1000/getSavedInputValue("js-snake-speed"));
+
+if (sessionStorage.highest > highest) {
+  highest = sessionStorage.highest;
 }
