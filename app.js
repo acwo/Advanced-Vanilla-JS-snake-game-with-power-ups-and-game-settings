@@ -204,8 +204,8 @@ function reset() {
   score = 0;
   apple = [
     [
-      Math.floor(Math.random() * boardWidth / cellSize) * cellSize,
-      Math.floor(Math.random() * boardHeight / cellSize) * cellSize
+      boardWidth / 2,
+      boardHeight / 2
     ]
   ];
   beast.x = 60;
@@ -232,6 +232,7 @@ function goToBelly() {
 }
 
 function move() {
+
   for (let a = 0; a < arguments.length; a++) {
 
     //positionchange
@@ -350,23 +351,39 @@ function move() {
       score += scoreIncrease;
 
       for (let t = 0; t < 1; t++) {
-        snakegrow(arguments[a],apple[b]);
+        snakegrow(arguments[a], apple[b]);
       }
 
       apple[b] = [];
 
-      apple[0][0] = Math.floor(Math.random() * boardWidth / cellSize) * cellSize;
-      apple[0][1] = Math.floor(Math.random() * boardHeight / cellSize) * cellSize;
+    // Excluding apples and powerups from displaying on potential walls positions
+      function randomPositionXExcludingWalls() {
+        let result = (Math.floor(Math.random() * boardWidth / cellSize) * cellSize);
+        if (result === 0 || result === 490 || result === 50 || result === 440 ) {
+          result = boardWidth / 2;
+        }
+        return result;
+      }
+      apple[0][0] = randomPositionXExcludingWalls();
+
+      function randomPositionYExcludingWalls() {
+        let result = (Math.floor(Math.random() * boardWidth / cellSize) * cellSize);
+        if (result === 0 || result === 490 || result === 100 || result === 390) {
+          result = boardHeight / 2;
+        }
+        return result;
+      }
+      apple[0][1] = randomPositionYExcludingWalls();
 
       if (Math.random() > 0.1 && score > 0) {
-          px = Math.floor(Math.random() * boardWidth / cellSize) * cellSize;
-          py = Math.floor(Math.random() * boardHeight / cellSize) * cellSize;
-          powerups[0] = [px,py,Math.floor((Math.random() * 6) + 1)];
+          px = randomPositionXExcludingWalls();
+          py = randomPositionYExcludingWalls();
+          powerups[0] = [px, py, Math.floor((Math.random() * 6) + 1)];
 
           // Secure Shorten Powerup
           if (powerups[0][2] == 5 && beast.tail.length < parseInt(getSavedInputValue("js-snake-size")) + 2) {
-            console.log("Math.random draw Shorten PowerUp but snake length was shorten than " + (parseInt(getSavedInputValue("js-snake-size")) + 2));
-            powerups[0] = [px,py,Math.floor((Math.random() * 6) + 1)];
+            console.info("Math.random draw Shorten PowerUp but snake length was shorten than " + (parseInt(getSavedInputValue("js-snake-size")) + 2));
+            powerups[0] = [px, py, Math.floor((Math.random() * 6) + 1)];
           }
         }
       }
@@ -375,14 +392,15 @@ function move() {
     for (let h = 0; h < powerups.length; h++) {
       if (arguments[a].x == powerups[h][0] && arguments[a].y == powerups[h][1]) {
         power(powerups[h][2], arguments[a]);
-        // return;
       }
     }
-	}
+  }
+
 }
 
 // Have to do it a simpler way without repeating myself!!
 function moveThruWalls() {
+
   for (let a = 0; a < arguments.length; a++) {
 
     //positionchange
@@ -440,24 +458,39 @@ function moveThruWalls() {
       score += scoreIncrease;
 
       for (let t = 0; t < 1; t++) {
-        snakegrow(arguments[a],apple[b]);
+        snakegrow(arguments[a], apple[b]);
       }
 
       apple[b] = [];
 
-      apple[0][0] = Math.floor(Math.random() * boardWidth / cellSize) * cellSize;
-      apple[0][1] = Math.floor(Math.random() * boardHeight / cellSize) * cellSize;
+    // Excluding apples and powerups from displaying on potential walls positions
+      function randomPositionXExcludingWalls() {
+        let result = (Math.floor(Math.random() * boardWidth / cellSize) * cellSize);
+        if (result === 0 || result === 490 || result === 50 || result === 440 ) {
+          result = boardWidth / 2;
+        }
+        return result;
+      }
+      apple[0][0] = randomPositionXExcludingWalls();
 
-      if (Math.random() > 0.1 && score > 3) {
-          px = Math.floor(Math.random() * boardWidth / cellSize) * cellSize;
-          py = Math.floor(Math.random() * boardHeight / cellSize) * cellSize;
-          powerups[0] = [px,py,Math.floor((Math.random() * 6) + 1)];
-          // powerups[0] = [px,py,6];
+      function randomPositionYExcludingWalls() {
+        let result = (Math.floor(Math.random() * boardWidth / cellSize) * cellSize);
+        if (result === 0 || result === 490 || result === 100 || result === 390) {
+          result = boardHeight / 2;
+        }
+        return result;
+      }
+      apple[0][1] = randomPositionYExcludingWalls();
+
+      if (Math.random() > 0.1 && score > 0) {
+          px = randomPositionXExcludingWalls();
+          py = randomPositionYExcludingWalls();
+          powerups[0] = [px, py, Math.floor((Math.random() * 6) + 1)];
 
           // Secure Shorten Powerup
           if (powerups[0][2] == 5 && beast.tail.length < parseInt(getSavedInputValue("js-snake-size")) + 2) {
-            console.log("Math.random draw Shorten PowerUp but snake length was shorten than " + (parseInt(getSavedInputValue("js-snake-size")) + 2));
-            powerups[0] = [px,py,Math.floor((Math.random() * 6) + 1)];
+            console.info("Math.random draw Shorten PowerUp but snake length was shorten than " + (parseInt(getSavedInputValue("js-snake-size")) + 2));
+            powerups[0] = [px, py, Math.floor((Math.random() * 6) + 1)];
           }
         }
       }
@@ -469,7 +502,8 @@ function moveThruWalls() {
         // return;
       }
     }
-	}
+  }
+
 }
 
 function power(index, fig) {
