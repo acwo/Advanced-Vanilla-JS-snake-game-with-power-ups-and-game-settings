@@ -319,12 +319,12 @@ function move() {
     if (level3 || level4) {
 
       // Left center
-      if (arguments[a].x == 50 && (110 <= arguments[a].y && arguments[a].y <= 390) ) {
+      if (arguments[a].x == 50 && (110 <= arguments[a].y && arguments[a].y <= 380) ) {
         isGameOver = true;
       }
 
       // Right center
-      if (arguments[a].x == 440 && (110 <= arguments[a].y && arguments[a].y <= 390) ) {
+      if (arguments[a].x == 440 && (110 <= arguments[a].y && arguments[a].y <= 380) ) {
         isGameOver = true;
       }
 
@@ -582,7 +582,7 @@ function power(index, fig) {
       }
       if (beast.tail.length > parseInt(getSavedInputValue("js-snake-size")) + 2) {
         snakeShorten(beast);
-        score -= parseInt(getSavedInputValue("js-snake-size"));
+        // score -= parseInt(getSavedInputValue("js-snake-size"));
       }
       goToBelly();
       console.info("Powerup SHORTEN by " + getSavedInputValue("js-snake-size"));
