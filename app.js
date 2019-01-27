@@ -1,5 +1,11 @@
-const canvas = document.getElementById('snake');
+const canvas = document.getElementById('snake__board');
 const ctx = canvas.getContext('2d');
+
+let level1Info = document.querySelector(".js-snake-level1-info");
+let level2Info = document.querySelector(".js-snake-level2-info");
+let level3Info = document.querySelector(".js-snake-level3-info");
+let level4Info = document.querySelector(".js-snake-level4-info");
+
 
 // ------------------------------------------------------------------------------------- //
 // -----------------------------     USER SETTINGS       ------------------------------ //
@@ -198,9 +204,13 @@ function startScreen() {
 function reset() {
   level0 = true;
   level1 = false;
+  level1Info.classList.remove("is-animated");
   level2 = false;
+  level2Info.classList.remove("is-animated");
   level3 = false;
+  level3Info.classList.remove("is-animated");
   level4 = false;
+  level4Info.classList.remove("is-animated");
   score = 0;
   apple = [
     [
@@ -436,7 +446,7 @@ function moveThruWalls() {
 
   // End of Crashes conditions
 
-  // Move arguments[a].tail: to previous
+    // Move arguments[a].tail: to previous
     for (let i = arguments[a].tail.length - 1; i > 0; i--) {
       arguments[a].tail[i][0] = arguments[a].tail[i-1][0];
       arguments[a].tail[i][1] = arguments[a].tail[i-1][1];
@@ -608,7 +618,7 @@ function draw() {
 
   if (level1 || level2 || level3 || level4) {
       ctx.lineWidth = cellSize * 2;
-      ctx.strokeStyle = "red";
+      ctx.strokeStyle = "#9d2d2d";
       // Top left X
       ctx.beginPath();
       ctx.moveTo(0, 0);
@@ -649,7 +659,6 @@ function draw() {
 
   if (level2 || level3 || level4) {
     ctx.lineWidth = cellSize;
-    ctx.strokeStyle = "red";
     // Top center
     ctx.beginPath();
     ctx.moveTo(100, 105);
@@ -666,7 +675,6 @@ function draw() {
 
   if (level3 || level4) {
     ctx.lineWidth = cellSize;
-    ctx.strokeStyle = "red";
     // Left center
     ctx.beginPath();
     ctx.moveTo(55, 110);
@@ -683,7 +691,6 @@ function draw() {
 
   if ( level4) {
       ctx.lineWidth = cellSize * 2;
-      ctx.strokeStyle = "red";
       ctx.beginPath();
       // Top left y
       ctx.moveTo(0, 0);
@@ -702,7 +709,7 @@ function draw() {
   }
 
   if (isGameOver) {
-    ctx.fillStyle = "red";
+    ctx.fillStyle = "#9d2d2d";
     ctx.textBaseline= "bottom";
     ctx.textAlign = "center";
     ctx.font = "bold 60px serif";
@@ -804,31 +811,58 @@ function levels() {
   }
 
   if(score >= 10) {
+    level0 = false;
     level1 = true;
     scoreIncrease = 2;
   }
   if(score >= 30) {
+    level0 = false;
+    level1 = false;
     level2 = true;
     scoreIncrease = 3;
   }
   if(score >= 60) {
+    level0 = false;
+    level1 = false;
+    level2 = false;
     level3 = true;
     scoreIncrease = 4;
   }
   if(score >= 100) {
+    level0 = false;
+    level1 = false;
+    level2 = false;
+    level3 = false;
     level4 = true;
     scoreIncrease = 5;
+  }
+
+  if(level1 === true) {
+    level1Info.innerHTML = "level 2";
+    level1Info.classList.add("is-animated");
+  }
+  if(level2 === true) {
+    level2Info.innerHTML = "level 3";
+    level2Info.classList.add("is-animated");
+  }
+  if(level3 === true) {
+    level3Info.innerHTML = "level 4";
+    level3Info.classList.add("is-animated");
+  }
+  if(level4 === true) {
+    level4Info.innerHTML = "level 5";
+    level4Info.classList.add("is-animated");
   }
 
 }
 
 reset();
 let gameLoop = setInterval( function() {
+  levels();
   move(beast);
   draw(beast);
   updateScores();
   startScreen();
-  levels();
 }, 1000/getSavedInputValue("js-snake-speed"));
 
 if (sessionStorage.highest > highest) {

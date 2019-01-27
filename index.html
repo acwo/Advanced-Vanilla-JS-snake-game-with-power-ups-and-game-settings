@@ -2,51 +2,66 @@
 <html>
 <head>
     <title>ssssnake</title>
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="index, nofollow">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <link href="main.css" media="screen, print" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
 
-    <div class="snake__settings js-snake-settings">
+    <p class="snake__info-overlay">
+        <span class="snake__info js-snake-level1-info">Level 2</span>
+        <span class="snake__info js-snake-level2-info">Level 3</span>
+        <span class="snake__info js-snake-level3-info">Level 4</span>
+        <span class="snake__info js-snake-level4-info">Level 5</span>
+    </p>
 
-        <select class="snake__setting" name="js-snake-level-select">
-            <option value="0">-- Choose a game level --</option>
-            <option value="0">Level 1</option>
-            <option value="1">Level 2</option>
-            <option value="2">Level 3</option>
-            <option value="3">Level 4</option>
-            <option value="4">Level 5</option>
-        </select>
+    <div class="snake">
 
-        <span>Snake speed (cells/sec)</span>
-        <span>5 min / 50 max</span>
-        <input class="snake__setting" type="number" name="js-snake-speed" min="5" max="50" value="10">
+        <div class="snake__settings js-snake-settings">
 
-        <span>Speed up / slow down / go-thru-walls time (sec)</span>
-        <span>5 min / 50 max</span>
-        <input class="snake__setting" type="number" name="js-snake-duration" min="5" max="50" value="10">
+            <select class="snake__setting" name="js-snake-level-select">
+                <option value="0">-- Choose a game level --</option>
+                <option value="0">Level 1</option>
+                <option value="1">Level 2</option>
+                <option value="2">Level 3</option>
+                <option value="3">Level 4</option>
+                <option value="4">Level 5</option>
+            </select>
 
-        <span>Extend / shorten value / score multiplier (cells)</span>
-        <span>5 min / 50 max</span>
-        <input class="snake__setting" type="number" name="js-snake-size" min="5" max="50" value="10">
+            <span>Snake speed (cells/sec)</span>
+            <span>5 min / 50 max</span>
+            <input class="snake__setting" type="number" name="js-snake-speed" min="5" max="50" value="10">
 
-        <button id="js-snake-saveSettings" class="snake__setting">Apply settings</button>
+            <span>Speed up / slow down / go-thru-walls time (sec)</span>
+            <span>5 min / 50 max</span>
+            <input class="snake__setting" type="number" name="js-snake-duration" min="5" max="50" value="10">
+
+            <span>Extend / shorten value / score multiplier (cells)</span>
+            <span>5 min / 50 max</span>
+            <input class="snake__setting" type="number" name="js-snake-size" min="5" max="50" value="10">
+
+            <button id="js-snake-saveSettings" class="snake__setting">Apply settings</button>
+
+        </div>
+
+        <canvas id="snake__board">
+        </canvas>
+
+        <div class="snake__scores">
+            <p>Your Score:
+                <span id="score">0</span>
+            </p>
+
+            <p>Highest Score:
+                <span id="highest">0</span>
+            </p>
+        </div>
 
     </div>
 
-    <canvas id="snake">
-    </canvas>
-
-    <div class="snake__scores">
-        <p>Your Score:
-            <span id="score">0</span>
-        </p>
-
-        <p>Highest Score:
-            <span id="highest">0</span>
-        </p>
+    <div class="links">
+        <a href="https://github.com/acwo/Snake-Game-with-HTML5-Canvas-and-Vanilla-JS">GitHub</a>
     </div>
 
     <script src="app.js"></script>
