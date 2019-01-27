@@ -1,11 +1,14 @@
 const canvas = document.getElementById('snake__board');
 const ctx = canvas.getContext('2d');
 
-let level1Info = document.querySelector(".js-snake-level1-info");
-let level2Info = document.querySelector(".js-snake-level2-info");
-let level3Info = document.querySelector(".js-snake-level3-info");
-let level4Info = document.querySelector(".js-snake-level4-info");
+const level1Info = document.querySelector(".js-snake-level1-info");
+const level2Info = document.querySelector(".js-snake-level2-info");
+const level3Info = document.querySelector(".js-snake-level3-info");
+const level4Info = document.querySelector(".js-snake-level4-info");
 
+const top5Btn = document.getElementById('js-top5-btn');
+const top5Title = document.querySelector('.js-top5-title');
+const top5List = document.querySelector('.js-top5-list');
 
 // ------------------------------------------------------------------------------------- //
 // -----------------------------     USER SETTINGS       ------------------------------ //
@@ -45,7 +48,6 @@ function getSavedSelectValue (key){
       return sessionStorage.getItem(key);
 }
 
-
 // Unfortunatelly passing sessionStorage values as constants doesn't seem to update gameloop dynamically as functions do
 // let getSnakeSpeedValue = getSavedInputValue("js-snake-speed");
 
@@ -60,6 +62,7 @@ saveSettingsButton.addEventListener('click', function() {
       draw(beast);
       updateScores();
       levels();
+      showTop5();
     }, 1000/getSavedInputValue("js-snake-speed"));
 });
 
@@ -86,7 +89,7 @@ let score = 0;
 let highest = 0;
 let collision = [];
 
-// Apples an PowerUps
+// Apples and PowerUps
 
 let ax;
 let ay;
@@ -171,7 +174,53 @@ window.addEventListener("keydown", function(e) {
 // ---------------------------------     FUNCTIONS       ------------------------------ //
 // ----------------------------------------------------------------------------------- //
 
-function Beast(x,y,moveRight,moveDown,moveUp,moveLeft,tail) {
+function saveScoreToTop5() {
+  let top5 = [];
+  if(sessionStorage.getItem('top5')) {
+    top5 = top5.concat(JSON.parse(sessionStorage.getItem('top5')));
+  }
+  top5.push(score);
+  sessionStorage.setItem('top5', JSON.stringify(top5));
+}
+
+top5Btn.addEventListener('click', function() {
+    saveScoreToTop5();
+    this.disabled = true;
+  }
+)
+
+function showTop5() {
+
+  if(sessionStorage.getItem('top5')) {
+
+    let storageTop5 = JSON.parse(sessionStorage.getItem('top5'));
+    let storageTop5Array = [];
+    storageTop5.forEach((singleScore) => {
+      storageTop5Array.push(singleScore);
+    })
+
+    top5Title.innerHTML = 'Top 5 scores:';
+    top5List.innerHTML = '';
+
+    function compareNumbers(a, b) {
+      return b - a
+    }
+
+    storageTop5Array.sort(compareNumbers);
+
+    for(let i = 0; i < 5; i++) {
+        if(storageTop5Array[i]) {
+          let li = document.createElement('li');
+          top5List.appendChild(li);
+          li.innerHTML = storageTop5Array[i];
+      }
+    }
+
+  }
+
+}
+
+function Beast(x, y, moveRight, moveDown, moveUp, moveLeft, tail) {
   this.x = x;
   this.y = y;
   this.moveRight = moveRight;
@@ -202,6 +251,8 @@ function startScreen() {
 }
 
 function reset() {
+  top5Btn.classList.remove("is-visible");
+  top5Btn.disabled = false;
   level0 = true;
   level1 = false;
   level1Info.classList.remove("is-animated");
@@ -232,8 +283,8 @@ function reset() {
 }
 
 // Add food to snake tail
-function snakegrow(b, apple) {
-  b.tail.push([apple[0], apple[1]]);
+function snakegrow(beast, apple) {
+  beast.tail.push([apple[0], apple[1]]);
 }
 
 // Hide powerup after eating
@@ -529,6 +580,7 @@ function power(index, fig) {
       draw(beast);
       updateScores();
       levels();
+      showTop5();
     }, 1000/(getSavedInputValue("js-snake-speed") / 2));
     setTimeout(function() {
       clearInterval(gameLoop);
@@ -537,6 +589,7 @@ function power(index, fig) {
         draw(beast);
         updateScores();
         levels();
+        showTop5();
       }, 1000/getSavedInputValue("js-snake-speed"));
     }, 1000 * getSavedInputValue("js-snake-duration"));
     goToBelly();
@@ -550,6 +603,7 @@ function power(index, fig) {
       draw(beast);
       updateScores();
       levels();
+      showTop5();
     }, 1000/(getSavedInputValue("js-snake-speed") * 1.3));
     setTimeout(function() {
       clearInterval(gameLoop);
@@ -558,6 +612,7 @@ function power(index, fig) {
         draw(beast);
         updateScores();
         levels();
+        showTop5();
       }, 1000/getSavedInputValue("js-snake-speed"));
     }, 1000 * getSavedInputValue("js-snake-duration"));
     goToBelly();
@@ -596,6 +651,7 @@ function power(index, fig) {
       draw(beast);
       updateScores();
       levels();
+      showTop5();
     }, 1000/getSavedInputValue("js-snake-speed"));
     setTimeout(function() {
       clearInterval(gameLoop);
@@ -604,6 +660,7 @@ function power(index, fig) {
         draw(beast);
         updateScores();
         levels();
+        showTop5();
       }, 1000/getSavedInputValue("js-snake-speed"));
     }, 1000 * getSavedInputValue("js-snake-duration"));
     goToBelly();
@@ -709,6 +766,7 @@ function draw() {
   }
 
   if (isGameOver) {
+    top5Btn.classList.add("is-visible");
     ctx.fillStyle = "#9d2d2d";
     ctx.textBaseline= "bottom";
     ctx.textAlign = "center";
@@ -863,6 +921,7 @@ let gameLoop = setInterval( function() {
   draw(beast);
   updateScores();
   startScreen();
+  showTop5();
 }, 1000/getSavedInputValue("js-snake-speed"));
 
 if (sessionStorage.highest > highest) {

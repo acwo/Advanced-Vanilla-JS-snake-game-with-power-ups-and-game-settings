@@ -58,7 +58,35 @@ a {
 
 .is-animated {
     display: block;
-    animation: TextFadeOut 2s forwards;
+    animation: TextFadeOut 4s forwards;
+}
+
+.top5__button {
+    display: none;
+}
+
+.is-visible {
+    display: block;
+    animation: Show 2s forwards;
+    transform-origin: top;
+}
+
+.top5__title {
+    margin: 5px 0;
+}
+
+.top5__list {
+    margin: 0;
+    padding-inline-start: 15px;
+}
+
+.top5__list li {
+    text-align: center;
+}
+
+.links {
+    width: 90%;
+    text-align: right;
 }
 
 @keyframes TextFadeOut {
@@ -73,7 +101,12 @@ a {
     }
 }
 
-.links {
-    width: 90%;
-    text-align: right;
+@keyframes Show {
+    from {
+        transform: scale(0);
+    }
+
+    to {
+        transform: scale(1);
+    }
 }
